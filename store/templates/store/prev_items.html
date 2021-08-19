@@ -1,0 +1,28 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <table style="width:85%">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                </tr>
+                {% for i in prev_item %}
+                    <tr>
+                        <td><p>{{ i.product }}</p></td>
+                        <td><p>{{ i.quantity }}</p></td>
+                        <td><button data-product="{{ i.product_id }}" data-action="add"
+                                class="btn btn-outline-secondary add-btn update-cart">Add to Cart
+                        </button></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}

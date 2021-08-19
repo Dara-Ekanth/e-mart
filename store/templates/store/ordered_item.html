@@ -1,0 +1,41 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{% block content %}
+    <form method="GET">
+        <div class="container">
+            <div class="row">
+                {% for field in myfilter.form %}
+                    <div class="form-group name1 col-md-4">
+                        {{ field|as_crispy_field }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+        <button class="btn btn-primary">Submit</button>
+        <a class="btn  btn-warning" href="{% url 'ordered_item' %}"> Clear </a>
+    </form>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-lg-4">
+                <img class="thumbnail" src="{{ product.imageURL }}">
+                <div class="box-element product">
+                    <h6><strong>{{ product.name | title }}</strong></h6>
+                    <hr>
+                    <button data-product="{{ product.id }}" data-action="add"
+                            class="btn btn-outline-secondary add-btn update-cart">Add to Cart
+                    </button>
+                    <a class="btn btn-outline-success" href="{% url 'product_description_page' product.id %}">View</a>
+                    <h4 style="display:inline-block;float:right">₹{{ product.price|floatformat:2 }}</h4>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock content %}
+
