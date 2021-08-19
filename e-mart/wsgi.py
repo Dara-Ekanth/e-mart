@@ -1,5 +1,5 @@
 """
-WSGI config for Hotel_Ordering_Application project.
+WSGI config for e-mart project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

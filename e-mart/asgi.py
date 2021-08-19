@@ -1,5 +1,5 @@
 """
-ASGI config for Hotel_Ordering_Application project.
+ASGI config for e-mart project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
