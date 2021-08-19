@@ -1,0 +1,13 @@
+{% extends "wallet/base.html" %}
+
+{% block content %}
+    <meta http-equiv="refresh" content="5; url={% url 'ordered_item' %}">
+    <div class="text-center mt-5">
+        <img class="img-fluid" src="https://i.postimg.cc/TP0SLtFm/green-tick-mark.jpg" alt="success" style="height:200px">
+        <h1 align="center">Thankyou!</h1>
+        <h1>Your transaction is success.</h1>
+        {% if sent %}
+            <p>Note: A Email has been sent to your mail ({{ mail_id }}) regarding the Payment.</p>
+        {% endif %}
+    </div>
+{% endblock %}

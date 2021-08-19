@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment in Progress</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .bg {
+            background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/rm27-tong-62-nature.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=383d958674f3ba66d32edbcc2565215a");
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="bg">
+    <div class="row" align="center" style="padding:50px;">
+        <P>The Amount payable is {{ amount }} INR.</P>
+        {% if payment and not paid %}
+            <form action="{% url 'success' %}" method="POST">
+                {% csrf_token %}
+                <script
+                        src="https://checkout.razorpay.com/v1/checkout.js"
+                        data-key="{{ data_key }}"
+                        data-amount="{{ payment.amount }}"
+                        data-currency="INR"
+                        data-order_id="{{ payment.id }}"
+                        data-buttontext="Pay with Razorpay"
+                        data-name="Hotel Management System."
+                        data-description="Thanks Ordering with us."
+                        data-image="https://example.com/your_logo.jpg"
+                        data-prefill.name="Dara Ekanth"
+
+                        data-theme.color="#F37254"
+                ></script>
+                <input type="hidden" custom="Hidden Element" name="hidden">
+            </form>
+        {% endif %}
+    <P>The amount present in your wallet is {{ balance }} INR.
+    </P>
+        {% if paid %}
+            <P>You successfully paid {{ amount }} INR.</P>
+            <button type="button" class="btn btn-primary active" href="home">Back to home</button>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
