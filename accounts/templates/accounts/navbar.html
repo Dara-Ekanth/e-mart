@@ -1,0 +1,38 @@
+<style>
+    .hello-msg {
+        font-size: 20px;
+        color: white;
+        margin-right: 20px;
+    }
+
+    .logout-msg {
+        font-size: 15px;
+        color: gainsboro;
+        margin-right: 10px;
+    }
+    .time-msg{
+        font-size: 15px;
+        color: white;
+        margin-right: 10px;
+    }
+</style>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="{% url 'ordered_item' %}">Home </a>
+            <a class="nav-item nav-link active" href="{% url 'settings' %}">settings</a>
+            <a class="nav-item nav-link disabled" href="#">Disabled</a>
+        </div>
+    </div>
+{#    <span class="logout-msg">{% now "jS - F - Y  H:i:s" %}</span>#}
+    <span><div id="clock" class="time-msg"><p>Time is precious.</p></div></span>
+    <span class="hello-msg">Hello, {{ request.user }}</span>
+    <span><a class="logout-msg" href="{% url 'logout_page' %}"> Logout</a></span>
+</nav>
