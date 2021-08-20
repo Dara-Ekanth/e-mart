@@ -5,34 +5,32 @@
 {% block content %}
 
     <div class="col-lg-4">
-    <img class="thumbnail" src="{{ product.imageURL }}">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
+        <img class="thumbnail" src="{{ product.imageURL }}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
 
-            <td><h5>Name<h5></h5></td>
+                <td><h5>Name</h5></td>
 
-            <td>{{ product.name }}</td>
-        </tr>
-        <tr>
-
-
-            <td><h5>Price</h5></td>
-            <td>Rs.{{ product.price }}</td>
-        </tr>
-
-        </tbody>
-    </table>
+                <td>{{ product.name }}</td>
+            </tr>
+            <tr>
 
 
-            <h3>Description:</h3>
-            <p>{{ product.description }}</p>
+                <td><h5>Price</h5></td>
+                <td>Rs.{{ product.price }}</td>
+            </tr>
+
+            </tbody>
+        </table>
 
 
+        <h3>Description:</h3>
+        <p>{{ product.description }}</p>
+    </div>
 {% endblock content %}
-
