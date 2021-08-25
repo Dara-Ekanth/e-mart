@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "verify_email",
     "django_filters",
     "wallet",
+    "ckeditor",
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
