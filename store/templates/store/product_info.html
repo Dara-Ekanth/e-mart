@@ -3,16 +3,12 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 {% block content %}
-
     <div class="col-lg-4">
-        <img class="thumbnail" src="{{ product.imageURL }}">
+    <img class="thumbnail" src="{{ product.imageURL }}">
+    </div>
+
+    <div class="col-lg-6">
         <table class="table">
-            <thead>
-            <tr>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
             <tr>
 
                 <td><h5>Name</h5></td>
@@ -28,9 +24,7 @@
 
             </tbody>
         </table>
-
-
-        <h3>Description:</h3>
-        <p>{{ product.description }}</p>
     </div>
+    <h3>Description:</h3>
+    <p>{{ product.description|safe }}</p>
 {% endblock content %}

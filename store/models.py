@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 # class Customer(models.Model):
@@ -25,7 +26,8 @@ class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     price = models.FloatField()
     image = models.ImageField(null=True, blank=True)
-    description = models.TextField(blank=True, default='this is the descriptions')
+    description = RichTextField(blank=True,null=True,default="Your description goes here...")
+    #description = models.TextField(blank=True, default='this is the descriptions')
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):
