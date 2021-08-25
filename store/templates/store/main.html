@@ -50,6 +50,10 @@
             color: #fff;
             margin-right: 20px;
         }
+        .logo {
+            height: 80px;
+            width: 50px;
+        }
     </style>
     {% block head %}
 
@@ -94,7 +98,9 @@
     <!-- Sidebar Holder -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h3><a href="{% url 'ordered_item' %}">Hotel Management</a></h3>
+            <h3><a href="{% url 'ordered_item' %}"> <img class="thumbnail"
+                                                               src="{% static '/images/1629359685600.png' %}"> </a></h3>
+
         </div>
 
         <ul class="list-unstyled components">
