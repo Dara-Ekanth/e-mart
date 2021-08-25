@@ -3,7 +3,6 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>e-mart</title>
 
@@ -51,8 +50,10 @@
             margin-right: 20px;
         }
         .logo {
-            height: 80px;
-            width: 50px;
+            max-width: 150px;
+            max-height: 150px;
+            margin: 0 auto;
+            border-radius: 10%;
         }
     </style>
     {% block head %}
@@ -97,8 +98,8 @@
 <div class="wrapper">
     <!-- Sidebar Holder -->
     <nav id="sidebar">
-        <div class="sidebar-header">
-            <h3><a href="{% url 'ordered_item' %}"> <img class="thumbnail"
+        <div class="sidebar-header" style="background-color: lightslategray">
+            <h3><a href="{% url 'ordered_item' %}"> <img class="logo"
                                                                src="{% static '/images/1629359685600.png' %}"> </a></h3>
 
         </div>
