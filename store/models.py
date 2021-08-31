@@ -41,6 +41,13 @@ class Product(models.Model):
             url = ''
         return url
 
+class Review(models.Model):
+    customer = models.OneToOneField(Customer,on_delete=models.SET_NULL,null=True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    content = RichTextField(blank=False)
+
+    def __str__(self):
+        return f'{str(self.customer)} {str(self.product)}'
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
