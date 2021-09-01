@@ -30,6 +30,7 @@
     <hr>
     <h1>Product Reviews</h1>
     <br>
+    {% if review %}
     {% for i in review %}
         <div class="card" style="width: 18rem;">
             <div class="card-body">
@@ -39,4 +40,7 @@
             </div>
         </div>
     {% endfor %}
+    {% else %}
+    <h4 style="text-align: center; color: dimgray">No reviews yet.</h4>
+    {% endif %}
 {% endblock content %}
