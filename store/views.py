@@ -94,7 +94,6 @@ def updateItem(request):
 
     return JsonResponse('Item was added', safe=False)
 
-
 def prev_orders(request):
     prev_ord = Order.objects.filter(customer=request.user)
     context = {'prev_ord': prev_ord}
@@ -103,8 +102,8 @@ def prev_orders(request):
 
 def prev_items(request, id):
     prev_item = OrderItem.objects.filter(order_id=id)
-    #product = OrderItem.objects.get(order_id=id)
-    context = {'prev_item': prev_item}
+    order = Order.objects.get(id=id)
+    context = {'prev_item': prev_item,'is_paid':order.paid}
     return render(request, 'store/prev_items.html', context)
 
 def review_items(request,id):
