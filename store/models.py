@@ -42,9 +42,11 @@ class Product(models.Model):
         return url
 
 class Review(models.Model):
-    customer = models.OneToOneField(Customer,on_delete=models.SET_NULL,null=True)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True,blank=True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True,null=True)
     content = RichTextField(blank=False)
+    date = models.DateTimeField(auto_now=True)
+
 
     def __str__(self):
         return f'{str(self.customer)} {str(self.product)}'
