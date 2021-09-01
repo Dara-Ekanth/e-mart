@@ -15,10 +15,18 @@
                     <tr>
                         <td><p>{{ i.product }}</p></td>
                         <td><p>{{ i.quantity }}</p></td>
-                        <td><button data-product="{{ i.product_id }}" data-action="add"
-                                class="btn btn-outline-secondary add-btn update-cart">Add to Cart
-                        </button></td>
-                        <td><a  class="btn btn-sm" href="{% url 'review_page' i.product_id %}"> Review</a> </td>
+                        <td>
+                            <button data-product="{{ i.product_id }}" data-action="add"
+                                    class="btn btn-outline-secondary add-btn update-cart">Add to Cart
+                            </button>
+                        </td>
+                        {% if is_paid %}
+                            <td><a class="btn btn-sm active" href="{% url 'review_page' i.product_id %}"> Review</a>
+                            </td>
+                        {% else %}
+                            <p style="color: indianred">You are not yet eligible to review this product. To review this item buy the product and
+                                make successful payment.</p>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
