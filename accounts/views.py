@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-# from django.contrib.auth.forms import UserCreationForm
+
 from .form import CustomUserCreationForm, settigs_form, update_profile_form, passwordchangingform
 from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
@@ -9,9 +8,6 @@ from django.urls import reverse_lazy
 from .decorators import unauthenticated_user
 from django.contrib.auth.decorators import login_required
 from verify_email.email_handler import send_verification_email
-
-from django.contrib.auth.models import Group
-import re
 
 
 # Create your views here.
@@ -22,51 +18,68 @@ def hello_world(request):
 
 @unauthenticated_user
 def login_views(request):
+    form = CustomUserCreationForm()
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('default_home_name')
-            # return HttpResponse(f'hello {request.user}')
-        else:
-            messages.info(request, "username or password is incorrect")
-    context = {}
+        if request.POST.get('submit') == 'sign_in':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('default_home_name')
+            else:
+                messages.info(request, "username or password is incorrect")
+        if request.POST.get('submit') == 'sign_up':
+
+            form = CustomUserCreationForm(request.POST)
+
+            if form.is_valid():
+                inactive_user = send_verification_email(request, form)
+                user_name = form.cleaned_data.get('username')
+
+                messages.success(request,
+                                 'The account was successfully created for ' + user_name + ', We sent a mail to you')
+                return redirect('login_page')
+            else:
+                messages.error(request, f'The account was unsuccessfully created {form.error_messages}')
+    context = {'form': form}
+
     return render(request, 'accounts/loginPage.html', context)
 
 
-@unauthenticated_user
-def register_views(request):
-    form = CustomUserCreationForm()
+#
+# @unauthenticated_user
+# def register_views(request):
+#     form = CustomUserCreationForm()
+#
+#     if request.method == 'POST':
+#         print(request.POST.get('submit'))
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             inactive_user = send_verification_email(request, form)
+#             # form.save()
+#             # user = form.save(commit=False)
+#             # user.save()
+#             user_name = form.cleaned_data.get('username')
+#             print(user_name)
+#             messages.success(request, 'Account was successfully created for ' + user_name + ' Email sent to your mail')
+#             return redirect('login_page')
+#
+#         # else:
+#         #
+#         #     # messages.error(request, f'Account was unsuccessfully created {form.error_messages}')
+#         #     return redirect('register_page')
+#     context = {'form': form}
+#     return render(request, 'accounts/registerPage.html', context)
 
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-
-        print()
-        if form.is_valid():
-            inactive_user = send_verification_email(request, form)
-            # form.save()
-            # user = form.save(commit=False)
-            # user.save()
-
-            user_name = form.cleaned_data.get('username')
-            print(user_name)
-            messages.success(request, 'Account was successfully created for ' + user_name + ' Email sent to your mail')
-            return redirect('login_page')
-
-        # else:
-        #
-        #     # messages.error(request, f'Account was unsuccessfully created {form.error_messages}')
-        #     return redirect('register_page')
-    context = {'form': form}
-    return render(request, 'accounts/registerPage.html', context)
 
 @login_required(login_url='login_page')
 def logout_view(request):
     logout(request)
     messages.success(request, 'You are successfully logged out')
     return redirect('login_page')
+
 
 @login_required(login_url='login_page')
 def default_home(request):
@@ -97,6 +110,7 @@ def default_home(request):
         print("home page")
         return redirect('ordered_item')
 
+
 @login_required(login_url='login_page')
 def settings_view(request):
     userr = request.user
@@ -110,6 +124,7 @@ def settings_view(request):
         #     return redirect('settings')
     context = {'form': form}
     return render(request, 'accounts/settings.html', context)
+
 
 @login_required(login_url='login_page')
 def update_profile_view(request):
