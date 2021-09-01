@@ -103,6 +103,7 @@ def prev_orders(request):
 
 def prev_items(request, id):
     prev_item = OrderItem.objects.filter(order_id=id)
+    #product = OrderItem.objects.get(order_id=id)
     context = {'prev_item': prev_item}
     return render(request, 'store/prev_items.html', context)
 
@@ -119,7 +120,7 @@ def review_items(request,id):
     #For updating the review written
     try:
         update_review = Review.objects.get(product_id=id,customer=request.user)
-        print(update_review)
+        print(update_review,"update review")
         if update_review:
             current_form = review_form(instance=update_review)
     except Exception as e:
@@ -128,7 +129,12 @@ def review_items(request,id):
     if request.method == 'POST':
         current_form = review_form(request.POST)
         if current_form.is_valid():
-            Review.objects.create(customer=request.user,product_id=id,content=current_form.cleaned_data.get('content'))
+            try:
+                is_review_exist = Review.objects.get(customer=request.user,product_id=id)
+                is_review_exist.content = current_form.cleaned_data.get('content')
+                is_review_exist.save()
+            except:
+                Review.objects.create(customer=request.user,product_id=id,content=current_form.cleaned_data.get('content'))
             return redirect('prev_orders')
         else:
             message = "Task Creation Failed."
