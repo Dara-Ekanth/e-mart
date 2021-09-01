@@ -18,6 +18,7 @@
                         <td><button data-product="{{ i.product_id }}" data-action="add"
                                 class="btn btn-outline-secondary add-btn update-cart">Add to Cart
                         </button></td>
+                        <td><a  class="btn btn-sm" href="{% url 'review_page' i.product_id %}"> Review</a> </td>
                     </tr>
                 {% endfor %}
             </table>

@@ -21,7 +21,7 @@
                         <tr>
                             <td>₹{{ i.amount }}</td>
                             {% if i.payment_id == 'due payment' %}
-                                <td><p>You Paid via wallet</p></td>
+                                <td><p>Payment incomplete</p></td>
                             {% else %}
                                 <td>{{ i.payment_id }}</td>
                             {% endif %}
