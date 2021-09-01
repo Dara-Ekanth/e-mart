@@ -1,0 +1,16 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{% block content %}
+
+    <h1>Hi you can write your review here!</h1>
+    <form method="POST" onsubmit="clearField();">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" name="save">
+    </form>
+
+
+{% endblock %}
