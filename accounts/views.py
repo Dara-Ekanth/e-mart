@@ -63,7 +63,7 @@ def login_views(request):
 #             # user.save()
 #             user_name = form.cleaned_data.get('username')
 #             print(user_name)
-#             messages.success(request, 'Account was successfully created for ' + user_name + ' Email sent to your mail')
+#             messages.success(request,'Account was successfully created for ' + user_name + ' Email sent to your mail')
 #             return redirect('login_page')
 #
 #         # else:
