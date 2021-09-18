@@ -9,6 +9,9 @@ from django.contrib import messages
 
 
 # Create your views here.
+# Global Variables
+is_upvoter = False
+is_downvoter = False
 def ordered_item(request):
     if request.user.is_authenticated:
         customer = request.user
@@ -29,10 +32,29 @@ def ordered_item(request):
 
 @login_required(login_url='login_page')
 def product_info(request, id):
+    global is_upvoter
+    global is_downvoter
     product = Product.objects.get(id=id)
     review = Review.objects.filter(product_id=id)
+    # try:
+    #     review_votes = Review_votes.objects.filter(review__product_id=id)
+    #     # print("review_votes",review_votes)
+    #     for i in review_votes:
+    #         print("this is not a magic",i)
+    #     upvote_count = review_votes.upvote_count
+    #     downvote_count = review_votes.downvote_count
+    # except Exception as e:
+    #     print(e,"Now I'm in exception++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    #     upvote_count = 0
+    #     downvote_count = 0
+    # this_user = request.user
+    # downvoters = list(review_votes.downvoters.all())
+    # upvoters = list(review_votes.upvoters.all())
+
+
     context = {'product': product,'review':review}
-    print(product.name, product.price)
+    #print(upvote_count,downvote_count)
+    #print(product.name, product.price)
     return render(request, 'store/product_info.html', context=context)
 
 
@@ -131,13 +153,57 @@ def review_items(request,id):
             try:
                 is_review_exist = Review.objects.get(customer=request.user,product_id=id)
                 is_review_exist.content = current_form.cleaned_data.get('content')
+                is_review_exist.rating = current_form.cleaned_data.get('rating')
                 is_review_exist.save()
             except:
-                Review.objects.create(customer=request.user,product_id=id,content=current_form.cleaned_data.get('content'))
+                Review.objects.create(customer=request.user,product_id=id,content=current_form.cleaned_data.get('content'),rating=current_form.cleaned_data.get('rating'))
             return redirect('prev_orders')
         else:
-            message = "Task Creation Failed."
+            message = "Unable to publish your review"
             messages.error(request, message)
     context = {'form': current_form}
 
     return render(request,'store/review_items.html',context)
+
+def upvote_review(request,id):
+    review_vote,created = Review_votes.objects.get_or_create(review_id=id)
+    vdownvoters = list(review_vote.downvoters.all())
+    vupvoters = list(review_vote.upvoters.all())
+    this_user = request.user
+    print(vdownvoters,"+++++++++++++++++++++++++++++++++++++++++++++++++")
+    if this_user in vdownvoters and review_vote.down_vote > 0:
+        review_vote.down_vote-=1
+        review_vote.downvoters.remove(this_user)
+        review_vote.save()
+    if this_user in vupvoters and review_vote.up_vote > 0:
+        message = "We successfully removed your like"
+        messages.success(request,message)
+        review_vote.up_vote-=1
+        review_vote.upvoters.remove(this_user)
+        review_vote.save()
+        return redirect('product_description_page',id=review_vote.review.product_id)
+    review_vote.up_vote+=1
+    review_vote.upvoters.add(this_user)
+    review_vote.save()
+    return redirect('product_description_page',id=review_vote.review.product_id)
+def downvote_review(request,id):
+    review_vote,created = Review_votes.objects.get_or_create(review_id=id)
+    vdownvoters = list(review_vote.downvoters.all())
+    vupvoters = list(review_vote.upvoters.all())
+    this_user = request.user
+    print(vupvoters,"+++++++++++++++++++++++++++++++++++++++++++++++++")
+    if this_user in vupvoters and review_vote.up_vote >0:
+        review_vote.up_vote-=1
+        review_vote.upvoters.remove(this_user)
+        review_vote.save()
+    if this_user in vdownvoters and review_vote.down_vote > 0:
+        message = "We successfully removed your dislike"
+        messages.success(request,message)
+        review_vote.down_vote -=1
+        review_vote.downvoters.remove(this_user)
+        review_vote.save()
+        return redirect('product_description_page',id=review_vote.review.product_id)
+    review_vote.down_vote+=1
+    review_vote.downvoters.add(this_user)
+    review_vote.save()
+    return redirect('product_description_page',id=review_vote.review.product_id)
