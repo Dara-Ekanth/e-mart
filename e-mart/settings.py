@@ -127,13 +127,13 @@ USE_TZ = True
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
+EMAIL_HOST_USER = "demosend3@gmail.com" #os.environ.get('EMAIL_ID')
+EMAIL_HOST_PASSWORD = "Thankyougoogle" #os.environ.get('EMAIL_PW')
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_ID')
 
-DATA_KEY = os.environ.get("DATA_KEY")
-PAYMENT_KEY = os.environ.get("PAYMENT_KEY")
+DATA_KEY = "rzp_test_psSDxZ66eu6MhW" #os.environ.get('DATA_KEY')
+PAYMENT_KEY = "5ABfbahgy2ip9SkS0rxV2X43"  #os.environ.get('PAYMENT_KEY')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
