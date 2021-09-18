@@ -1,7 +1,8 @@
-from .models import Review
-from django.forms import ModelForm
+from .models import Review,rate_choices
+from django import forms
 
-class review_form(ModelForm):
+class review_form(forms.ModelForm):
+    rating = forms.ChoiceField(choices=rate_choices,widget=forms.Select(),required=True)
     class Meta:
         model = Review
         fields = ['content']
