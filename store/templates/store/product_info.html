@@ -3,22 +3,30 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 {% block content %}
+    <style>
+        #stats { white-space: nowrap; }
+        .child { display: inline-block; }
+    </style>
+
     <table>
-    <tr>
-    <td>
-    <div class="col-lg-12">
-        <img class="thumbnail" src="{{ product.imageURL }}">
-    </div>
-    </td>
-        <td>
+        <tr>
+            <td>
+                <div class="col-lg-12">
+                    <img class="thumbnail" src="{{ product.imageURL }}">
+                </div>
+            </td>
+            <td>
             <div class="col-lg-12">
-            {% for key,val in product.get_statistics.items %}
-                <p> Rating with {{ key }}  &nbsp; <progress value={{ val }}  max="100"></progress> </p>
-                <br>
-            {% endfor %}
+            <h2 style="color: darkred">Review statistics of this product</h2>
+                    {% for key,val in product.get_statistics.items %}
+                                <label for="stats" style="height:25px "> Rating {{ key }} &nbsp;</label>
+                                <progress id="stats" value={{ val }}  max="100"
+                                          style="height: 25px; width: 250px"></progress> <p class="child">{{ val }}%</p>
+                        <br>
+                    {% endfor %}
             </div>
-        </td>
-    </tr>
+            </td>
+        </tr>
     </table>
 
     <div class="col-lg-6">
@@ -34,7 +42,7 @@
 
                 <td><h5>Price</h5></td>
                 <td>Rs.{{ product.price }}</td>
-{#                <td>{{ product.get_statistics }}</td>#}
+                {#                <td>{{ product.get_statistics }}</td>#}
 
             </tr>
 
