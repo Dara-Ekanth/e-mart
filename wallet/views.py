@@ -112,67 +112,73 @@ from store.models import *
 
 @login_required(login_url='login_page')
 def checkout_payment(request, id):
-    print("checkout_payment 1")
-    order_id = Order.objects.get(id=id)
-    amt = order_id.get_cart_total
-    name = request.user
-    amount = float(amt) * 100
-    order_id.amount = amount / 100
-    order_id.save()
-    email = request.user.email
-    print("The name is", name)
-    print("The amount is", amount)
-    is_yes = request.POST.get('yes')
-    client = razorpay.Client(auth=(settings.DATA_KEY, settings.PAYMENT_KEY))
-    # payment = client.order.create({'amount': amount, 'currency': 'INR', 'payment_capture': '1'})
-    # print("The payment is", payment)
-    # print("The request user is", request.user)
+    try:
+        # print("checkout_payment 1")
+        order_id = Order.objects.get(id=id)
+        amt = order_id.get_cart_total
+        name = request.user
+        amount = float(amt) * 100
+        order_id.amount = amount / 100
+        order_id.save()
+        email = request.user.email
+        # print("The name is", name)
+        # print("The amount is", amount)
+        is_yes = request.POST.get('yes')
+        client = razorpay.Client(auth=(settings.DATA_KEY, settings.PAYMENT_KEY))
+        # payment = client.order.create({'amount': amount, 'currency': 'INR', 'payment_capture': '1'})
+        # print("The payment is", payment)
+        # print("The request user is", request.user)
 
-    # custom = customer.objects.get(user=request.user)
-    wallet_attrb, creat = wallet.objects.get_or_create(name=request.user)
+        # custom = customer.objects.get(user=request.user)
+        wallet_attrb, creat = wallet.objects.get_or_create(name=request.user)
 
-    if is_yes:
-        if amount / 100 <= wallet_attrb.balance:
-            wallet_attrb.balance -= amount / 100
-            wallet_attrb.save()
-            order_id.complete = True
-            order_id.payment_id = "paid via wallet"
-            order_id.order_id = "wallet payment"
-            order_id.paid = True
-            order_id.save()
-            msg_plain = render_to_string('wallet/email.txt')
-            msg_html = render_to_string(('wallet/email.html'))
-            date = datetime.now()
-            date = date.strftime("%c")
-            is_sent = send_mail(f"Your payment has been received on {date} IST.", msg_plain, settings.EMAIL_HOST_USER,
-                                [email],
-                                html_message=msg_html)
-            return render(request, "wallet/wallet_success.html")
+        if is_yes:
+            if amount / 100 <= wallet_attrb.balance:
+                wallet_attrb.balance -= amount / 100
+                wallet_attrb.save()
+                order_id.complete = True
+                order_id.payment_id = "paid via wallet"
+                order_id.order_id = "wallet payment"
+                order_id.paid = True
+                order_id.save()
+                msg_plain = render_to_string('wallet/email.txt')
+                msg_html = render_to_string(('wallet/email.html'))
+                date = datetime.now()
+                date = date.strftime("%c")
+                is_sent = send_mail(f"Your payment has been received on {date} IST.", msg_plain,
+                                    settings.EMAIL_HOST_USER,
+                                    [email],
+                                    html_message=msg_html)
+                return render(request, "wallet/wallet_success.html")
+            else:
+                amount -= float(wallet_attrb.balance) * 100
+                payment = client.order.create({'amount': amount, 'currency': 'INR', 'payment_capture': '1'})
+                receipt = Order.objects.get(id=id)
+                receipt.order_id = payment['id']
+                # receipt.email = email
+                receipt.save()
+                context = {'payment': payment, 'amount': amount / 100, 'paid': receipt.paid,
+                           'data_key': settings.DATA_KEY,
+                           'balance': wallet_attrb.balance, 'total': wallet_attrb.balance + payment['amount'] / 100}
+
+                return render(request, "wallet/partial_bill.html", context)
         else:
-            amount -= float(wallet_attrb.balance) * 100
             payment = client.order.create({'amount': amount, 'currency': 'INR', 'payment_capture': '1'})
+            # receipt = Order.objects.create(customer=name, amount=amount, order_id=payment['id'],
+            #                                email=email)
             receipt = Order.objects.get(id=id)
             receipt.order_id = payment['id']
             # receipt.email = email
             receipt.save()
             context = {'payment': payment, 'amount': payment['amount'] / 100, 'paid': receipt.paid,
-                       'data_key': settings.DATA_KEY, 'balance': wallet_attrb.balance,
-                       'total': wallet_attrb.balance + payment['amount'] / 100}
-            context['amount'] = amount / 100
+                       'data_key': settings.DATA_KEY, 'balance': wallet_attrb.balance}
+            return render(request, "wallet/payment.html", context)
+        return render(request, "wallet/index.html", {'form': form})
 
-            return render(request, "wallet/partial_bill.html", context)
-    else:
-        payment = client.order.create({'amount': amount, 'currency': 'INR', 'payment_capture': '1'})
-        # receipt = Order.objects.create(customer=name, amount=amount, order_id=payment['id'],
-        #                                email=email)
-        receipt = Order.objects.get(id=id)
-        receipt.order_id = payment['id']
-        # receipt.email = email
-        receipt.save()
-        context = {'payment': payment, 'amount': payment['amount'] / 100, 'paid': receipt.paid,
-                   'data_key': settings.DATA_KEY, 'balance': wallet_attrb.balance}
-        return render(request, "wallet/payment.html", context)
-    return render(request, "wallet/index.html", {'form': form})
+
+    except:
+        messages.error(request, "Payment Failed")
+        return redirect('default_home_name')
 
 
 @login_required(login_url='login_page')
@@ -222,7 +228,7 @@ def success(request):
         render(request, "wallet/email.html", {'amount': amount_paid})
         print("The data is printing from success", data)
         msg_plain = render_to_string('wallet/email.txt')
-        msg_html = render_to_string(('wallet/email.html'))
+        msg_html = render_to_string('wallet/email.html')
         date = datetime.now()
         date = date.strftime("%c")
         is_sent = send_mail(f"Your payment has been received on {date} IST.", msg_plain, settings.EMAIL_HOST_USER,
