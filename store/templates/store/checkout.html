@@ -23,7 +23,7 @@
             </div>
 
             <div class="box-element" id="payment-info">
-                <small>Paypal Options</small>
+                <small>Payment Options</small>
                 <form action="{% url 'home' order.id %}" method="POST">
                     {% csrf_token %}
 
