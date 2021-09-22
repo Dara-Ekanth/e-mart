@@ -22,22 +22,6 @@
                 <h5>Total: ₹{{ order.get_cart_total|floatformat:2 }}</h5>
             </div>
 
-            <div class="box-element" id="payment-info">
-                <small>Paypal Options</small>
-                <form action="{% url 'home' order.id %}" method="POST">
-                    {% csrf_token %}
-
-                    <b>Do you want to pay using wallet Balance?</b>
-                    <br>
-                    <input type="checkbox" name="yes" value="yes">
-                    <label for="yes">I want to pay using wallet</label>
-                    <br>
-
-                    <button type="submit" class="btn btn-success btn-block">Submit</button>
-                </form>
-
-            </div>
-
         </div>
 
     </div>
