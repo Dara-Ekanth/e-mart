@@ -20,13 +20,7 @@
                                     class="btn btn-outline-secondary add-btn update-cart">Add to Cart
                             </button>
                         </td>
-                        {% if is_paid %}
-                            <td><a class="btn btn-sm active" href="{% url 'review_page' i.product_id %}"> Review</a>
-                            </td>
-                        {% else %}
-                            <p style="color: indianred">You are not yet eligible to review this product. To review this item buy the product and
-                                make successful payment.</p>
-                        {% endif %}
+
                     </tr>
                 {% endfor %}
             </table>

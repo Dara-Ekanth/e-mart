@@ -15,17 +15,17 @@
                     <img class="thumbnail" src="{{ product.imageURL }}">
                 </div>
             </td>
-            <td>
-            <div class="col-lg-12">
-            <h2 style="color: darkred">Review statistics of this product</h2>
-                    {% for key,val in product.get_statistics.items %}
-                                <label for="stats" style="height:25px "> Rating {{ key }} &nbsp;</label>
-                                <progress id="stats" value={{ val }}  max="100"
-                                          style="height: 25px; width: 250px"></progress> <p class="child">{{ val }}%</p>
-                        <br>
-                    {% endfor %}
-            </div>
-            </td>
+{#            <td>#}
+{#            <div class="col-lg-12">#}
+{#            <h2 style="color: darkred">Review statistics of this product</h2>#}
+{#                    {% for key,val in product.get_statistics.items %}#}
+{#                                <label for="stats" style="height:25px "> Rating {{ key }} &nbsp;</label>#}
+{#                                <progress id="stats" value={{ val }}  max="100"#}
+{#                                          style="height: 25px; width: 250px"></progress> <p class="child">{{ val }}%</p>#}
+{#                        <br>#}
+{#                    {% endfor %}#}
+{#            </div>#}
+{#            </td>#}
         </tr>
     </table>
 
@@ -52,25 +52,25 @@
     <h3>Description:</h3>
     <p>{{ product.description|safe }}</p>
     <hr>
-    <h1>Product Reviews</h1>
-    <br>
-    {% if review %}
-        {% for i in review %}
-            <div class="card" style="width: 20rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ i.customer|title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ i.date }} Rating: {{ i.rating }}</h6>
-                    <p class="card-text">{{ i.content|safe }}</p>
-                    <a class="btn btn-sm" href="{% url 'upvote' i.id %}"><img id="cart-icon"
-                                                                              src="{% static 'images/upvote.png' %}"></a> {{ i.upvote_count }}
-                    <a class="btn btn-sm" href="{% url 'downvote' i.id %}"><img id="cart-icon"
-                                                                                src="{% static 'images/downvote.jpg' %}">
-                    </a> {{ i.downvote_count }}
-                </div>
-            </div>
-            <br>
-        {% endfor %}
-    {% else %}
-        <h4 style="text-align: center; color: dimgray">No reviews yet.</h4>
-    {% endif %}
+{#    <h1>Product Reviews</h1>#}
+{#    <br>#}
+{#    {% if review %}#}
+{#        {% for i in review %}#}
+{#            <div class="card" style="width: 20rem;">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title">{{ i.customer|title }}</h5>#}
+{#                    <h6 class="card-subtitle mb-2 text-muted">{{ i.date }} Rating: {{ i.rating }}</h6>#}
+{#                    <p class="card-text">{{ i.content|safe }}</p>#}
+{#                    <a class="btn btn-sm" href="{% url 'upvote' i.id %}"><img id="cart-icon"#}
+{#                                                                              src="{% static 'images/upvote.png' %}"></a> {{ i.upvote_count }}#}
+{#                    <a class="btn btn-sm" href="{% url 'downvote' i.id %}"><img id="cart-icon"#}
+{#                                                                                src="{% static 'images/downvote.jpg' %}">#}
+{#                    </a> {{ i.downvote_count }}#}
+{#                </div>#}
+{#            </div>#}
+{#            <br>#}
+{#        {% endfor %}#}
+{#    {% else %}#}
+{#        <h4 style="text-align: center; color: dimgray">No reviews yet.</h4>#}
+{#    {% endif %}#}
 {% endblock content %}
