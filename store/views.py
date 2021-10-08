@@ -116,18 +116,20 @@ def updateItem(request):
 
     return JsonResponse('Item was added', safe=False)
 
+@login_required(login_url='login_page')
 def prev_orders(request):
     prev_ord = Order.objects.filter(customer=request.user)
     context = {'prev_ord': prev_ord}
     return render(request, 'store/prev_orders.html', context)
 
-
+@login_required(login_url='login_page')
 def prev_items(request, id):
     prev_item = OrderItem.objects.filter(order_id=id)
     order = Order.objects.get(id=id)
     context = {'prev_item': prev_item,'is_paid':order.paid}
     return render(request, 'store/prev_items.html', context)
 
+@login_required(login_url='login_page')
 def review_items(request,id):
     #This is to check if user is writing review before ordering
     orders_by_the_customer = Order.objects.filter(customer=request.user,paid=False)
@@ -165,6 +167,7 @@ def review_items(request,id):
 
     return render(request,'store/review_items.html',context)
 
+@login_required(login_url='login_page')
 def upvote_review(request,id):
     review_vote,created = Review_votes.objects.get_or_create(review_id=id)
     vdownvoters = list(review_vote.downvoters.all())
@@ -186,6 +189,8 @@ def upvote_review(request,id):
     review_vote.upvoters.add(this_user)
     review_vote.save()
     return redirect('product_description_page',id=review_vote.review.product_id)
+
+@login_required(login_url='login_page')
 def downvote_review(request,id):
     review_vote,created = Review_votes.objects.get_or_create(review_id=id)
     vdownvoters = list(review_vote.downvoters.all())
