@@ -24,7 +24,8 @@
             overflow: hidden;
         }
     </style>
-    <div style='margin-top:5px;margin-left:10px;margin-right:10px;'>
+
+    <div>
         <div class="row">
             <div class="col-md-3">
                 <div class="card card-body">
@@ -37,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div style='margin-top:5px;margin-left:10px;margin-right:10px;'>
+    <div>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
@@ -90,4 +91,5 @@
             <input class="btn btn-primary" type="submit" name="save">
         </form>
     </div>
+
 {% endblock %}
