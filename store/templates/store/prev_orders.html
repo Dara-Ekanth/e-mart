@@ -21,7 +21,7 @@
                         <tr>
                             <td>₹{{ i.amount }}</td>
                             {% if i.payment_id == 'due payment' %}
-                                <td><p>You Paid via wallet</p></td>
+                                <td><p>Payment incomplete</p></td>
                             {% else %}
                                 <td>{{ i.payment_id }}</td>
                             {% endif %}
@@ -41,7 +41,7 @@
                             {#                        <td>j</td>#}
                             {#                    {% endfor %}#}
                             {% if i.paidto_wallet %}
-                                <td><a class="btn btn-sm btn-info" href="#">wallet Payment</a></td>
+                                <td><b style="text-align: center">Wallet Payment</b></td>
                             {% else %}
                                 <td><a class="btn btn-sm btn-info" href="{% url 'prev_items' i.id %}">View</a></td>
                             {% endif %}
