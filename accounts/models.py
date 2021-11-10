@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
     name = models.CharField(max_length=50,null=True,blank=True)
     email = models.EmailField(unique=True)
     Gender = models.CharField(max_length=6, choices=GENDER_CHOICES,default='Male')
-    Birthday = models.DateTimeField(null=True,blank=True)
+    Birthday = models.DateField(null=True,blank=True,auto_created=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format: '+999999999'. Up to 15 digits "
                                          "allowed.")
