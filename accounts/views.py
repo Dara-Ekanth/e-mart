@@ -45,10 +45,10 @@ def register_views(request):
 
         print()
         if form.is_valid():
-            inactive_user = send_verification_email(request, form)
-            # form.save()
-            # user = form.save(commit=False)
-            # user.save()
+            #inactive_user = send_verification_email(request, form)
+            form.save()
+            user = form.save(commit=False)
+            user.save()
 
             user_name = form.cleaned_data.get('username')
             print(user_name)
@@ -105,9 +105,16 @@ def settings_view(request):
         form = settigs_form(request.POST, request.FILES, instance=userr)
         if form.is_valid():
             form.save()
-            return redirect('ordered_item')
-        # else:
-        #     return redirect('settings')
+            print(form.cleaned_data["Birthday"])
+            print("Form saved successfully")
+            mssg = "Form saved successfully"
+            messages.success(request,mssg)
+            return redirect('settings')
+        else:
+            print("Form not saved")
+            mssg = "Form not saved"
+            messages.error(request,mssg)
+            return redirect('settings')
     context = {'form': form}
     return render(request, 'accounts/settings.html', context)
 
