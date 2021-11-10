@@ -13,7 +13,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class settigs_form(ModelForm):
-    Birthday = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+    #Birthday = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
     proof = forms.ImageField(widget=forms.FileInput)
     phone_number = forms.RegexField(regex=r'^\+?1?\d{9,15}$', error_messages={
         'required': "Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."})
