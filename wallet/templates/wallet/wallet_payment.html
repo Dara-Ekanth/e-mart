@@ -35,7 +35,8 @@
                         data-buttontext="Pay with Razorpay"
                         data-name="e-mart"
                         data-description="Thanks Ordering with us."
-                        data-image="https://example.com/your_logo.jpg"
+                        {% load static %}
+                        data-image="{% static  'images/E-mart.drawio.png' %}"
                         data-prefill.name="{{ request.user }}"
 
                         data-theme.color="#F37254"
