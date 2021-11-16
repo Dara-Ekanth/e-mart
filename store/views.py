@@ -207,3 +207,5 @@ def downvote_review(request,id):
     review_vote.downvoters.add(this_user)
     review_vote.save()
     return redirect('product_description_page',id=review_vote.review.product_id)
+def about_us_view(request):
+    return render(request,"store/about.html")
