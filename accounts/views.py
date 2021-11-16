@@ -34,15 +34,15 @@ def login_views(request):
 
             form = CustomUserCreationForm(request.POST)
 
-            # if form.is_valid():
-            #     inactive_user = send_verification_email(request, form)
-            #     user_name = form.cleaned_data.get('username')
             if form.is_valid():
-                #inactive_user = send_verification_email(request, form)
-                form.save()
+                inactive_user = send_verification_email(request, form)
                 user_name = form.cleaned_data.get('username')
-                user = form.save(commit=False)
-                user.save()
+            # if form.is_valid():
+            #     #inactive_user = send_verification_email(request, form)
+            #     form.save()
+            #     user_name = form.cleaned_data.get('username')
+            #     user = form.save(commit=False)
+            #     user.save()
 
                 messages.success(request,
                                  'The account was successfully created for ' + user_name + ', We sent a mail to you')
